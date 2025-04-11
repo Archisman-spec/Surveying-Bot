@@ -1,4 +1,4 @@
-package com.Surveying_Bot.Models;
+package com.Surveying_Bot.models;
 
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.hibernate.engine.internal.Cascade;
 
 import java.util.UUID;
 

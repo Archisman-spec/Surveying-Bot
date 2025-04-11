@@ -1,4 +1,4 @@
-package com.Surveying_Bot.Models;
+package com.Surveying_Bot.models;
 
 public enum Role {
     ADMIN, USER
