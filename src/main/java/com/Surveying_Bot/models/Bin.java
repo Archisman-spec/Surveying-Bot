@@ -1,17 +1,16 @@
 package com.Surveying_Bot.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "bin")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Bin {
@@ -22,13 +21,17 @@ public class Bin {
 
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
-    @NotNull(message = "Image URL must not be null")
-    @Size(min = 10, max = 500, message = "Image URL must be between 10 and 500 characters")
-    @Pattern(regexp = "^(https?://).+", message = "Image URL must be a valid HTTP or HTTPS URL")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BinStatus binStatus;
+
+    @NotBlank(message = "Image URL must not be blank")
+    @Size(max = 2048, message = "Image URL is too long")
     private String imageUrl;
 
     @NotNull(message = "Bin level must not be null")
-    @PositiveOrZero(message = "Bin level must be zero or positive")
+    @Min(value = 0, message = "Bin level must be at least 0%")
+    @Max(value = 100, message = "Bin level must not exceed 100%")
     private Long binLevel;
 
     @OneToOne
