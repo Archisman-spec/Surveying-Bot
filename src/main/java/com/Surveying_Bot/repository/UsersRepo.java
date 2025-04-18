@@ -13,4 +13,6 @@ public interface UsersRepo extends JpaRepository<Users, UUID> {
 
     Optional<Users> findById(UUID id);
 
+    boolean existsByUsernameAndIdNot(String username, UUID id);
+
 }

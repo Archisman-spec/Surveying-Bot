@@ -30,7 +30,7 @@ public class Users {
     private Role role;
 
     @NotNull(message = "Username must not be null")
-    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+    @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters")
     @Pattern(regexp = "^[a-zA-Z0-9_]{3,30}$",message = "Username must contain only letters, digits, or underscores (no spaces or special characters)")
     private String username;
 
