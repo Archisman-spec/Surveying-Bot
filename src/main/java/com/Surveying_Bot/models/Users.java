@@ -3,7 +3,7 @@ package com.Surveying_Bot.models;
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,21 +20,21 @@ import java.util.UUID;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Role must not be null")
+    @Column(nullable = false, columnDefinition = "role")
     private Role role;
 
-    @NotNull(message = "Username must not be null")
+    @NotBlank(message = "Username must not be null")
     @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9_]{3,30}$",message = "Username must contain only letters, digits, or underscores (no spaces or special characters)")
+    @Pattern(regexp = "^[a-zA-Z0-9_]{3,30}$",message = "Username must contain only letters, digits, or underscores")
+    @Column(nullable = false, unique = true, length = 30)
     private String username;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Bin bin;
 
 }

@@ -1,6 +1,4 @@
 package com.Surveying_Bot.service;
-
-
 import com.Surveying_Bot.exceptions.APIException;
 import com.Surveying_Bot.exceptions.ResourceNotFoundException;
 import com.Surveying_Bot.models.Bin;
@@ -28,7 +26,7 @@ public class UsersServiceImpl implements UsersService {
 
     private final UsersRepo userRepo;
 
-    private final BinRepo binRepo;
+ //   private final BinRepo binRepo;
 
     private final ModelMapper modelMapper;
 
@@ -46,31 +44,20 @@ public class UsersServiceImpl implements UsersService {
 
             Users users = modelMapper.map(usersRequestDTO, Users.class);
 
-            if (usersRequestDTO.getRole() == null || usersRequestDTO.getRole().trim().isEmpty()) {
-                users.setRole(Role.USER);
-            } else {
-                try {
-                    users.setRole(Role.valueOf(usersRequestDTO.getRole().toUpperCase()));
-                } catch (IllegalArgumentException e){
-                    users.setRole(Role.USER);
-                }
-            }
+            users.setRole(usersRequestDTO.getRole());
 
             Users savedUser = userRepo.save(users);
 
-            Bin bin = new Bin();
-            bin.setUsers(savedUser);
-            bin.setBinStatus(BinStatus.PENDING);
-            Bin savedBin = binRepo.save(bin);
+//            Bin bin = new Bin();
+//            bin.setUsers(savedUser);
+//            bin.setBinStatus(BinStatus.PENDING);
+//            binRepo.save(bin);
 
-            UsersResponseDTO response = modelMapper.map(savedUser, UsersResponseDTO.class);
-            response.setBinId(savedBin.getId());
+            return modelMapper.map(savedUser, UsersResponseDTO.class);
 
-            return response;
         } catch (DataIntegrityViolationException e){
             throw new APIException("A User with this username already exists.", e);
         }
-
     }
 
     @Override
@@ -101,19 +88,13 @@ public class UsersServiceImpl implements UsersService {
             existingUser.setUsername(usersRequestDTO.getUsername());
         }
 
-        if (usersRequestDTO.getRole() != null && !usersRequestDTO.getRole().isBlank()){
-            try{
-                Role newRole = Role.valueOf(usersRequestDTO.getRole().trim().toUpperCase());
-                existingUser.setRole(newRole);
-            } catch (IllegalArgumentException e){
-                throw new APIException("Invalid role provided: " + usersRequestDTO.getRole());
-            }
+        if (usersRequestDTO.getRole() != null) {
+            existingUser.setRole(usersRequestDTO.getRole());
         }
 
         Users updatedUser = userRepo.save(existingUser);
 
         return modelMapper.map(updatedUser, UsersResponseDTO.class);
-
     }
 
     @Override
@@ -121,8 +102,8 @@ public class UsersServiceImpl implements UsersService {
         Users user = userRepo.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("User", "userId", id));
 
-        binRepo.findBinByUsersId(user.getId())
-                .ifPresent(bin -> binRepo.delete(bin));
+      //  binRepo.findBinByUsersId(user.getId())
+           //     .ifPresent(bin -> binRepo.delete(bin));
 
         userRepo.delete(user);
 
@@ -130,4 +111,5 @@ public class UsersServiceImpl implements UsersService {
     }
 
 }
+
 

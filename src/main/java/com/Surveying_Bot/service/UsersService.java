@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UsersService {
+
     UsersResponseDTO createUser(UsersRequestDTO usersRequestDTO);
 
     UsersResponseDTO getUserById(UUID id);
