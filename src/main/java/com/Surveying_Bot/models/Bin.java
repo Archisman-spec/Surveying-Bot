@@ -16,27 +16,28 @@ import java.util.UUID;
 public class Bin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private OffsetDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "bin_status")
     private BinStatus binStatus;
 
     @NotBlank(message = "Image URL must not be blank")
     @Size(max = 2048, message = "Image URL is too long")
+    @Column(nullable = false, length = 2048)
     private String imageUrl;
 
-    @NotNull(message = "Bin level must not be null")
     @Min(value = 0, message = "Bin level must be at least 0%")
     @Max(value = 100, message = "Bin level must not exceed 100%")
+    @Column(nullable = false)
     private Long binLevel;
 
     @OneToOne
-    @JoinColumn(name = "id",referencedColumnName = "id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false, unique = true)
     private Users users;
 
-
 }
+

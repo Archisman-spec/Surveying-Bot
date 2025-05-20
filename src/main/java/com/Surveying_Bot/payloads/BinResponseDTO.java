@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -16,7 +16,7 @@ public class BinResponseDTO {
     private Long binLevel;
     private BinStatus binStatus;
     private String imageUrl;
-    private LocalDateTime timestamp;
+    private OffsetDateTime createdAt;
     private UUID userId;
 
 }
