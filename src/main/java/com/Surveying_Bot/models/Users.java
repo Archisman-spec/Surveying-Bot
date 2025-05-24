@@ -20,12 +20,14 @@ import java.util.UUID;
 public class Users {
 
     @Id
+    @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
+    @Column(name = "created_at", updatable = false, insertable = false)
     private OffsetDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "role")
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private Role role;
 
     @NotBlank(message = "Username must not be null")
@@ -34,7 +36,7 @@ public class Users {
     @Column(nullable = false, unique = true, length = 30)
     private String username;
 
-    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Bin bin;
 
 }
