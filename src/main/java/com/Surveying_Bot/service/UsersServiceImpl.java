@@ -44,6 +44,8 @@ public class UsersServiceImpl implements UsersService {
 
             Users users = modelMapper.map(usersRequestDTO, Users.class);
 
+            users.setId(usersRequestDTO.getId());
+
             users.setRole(usersRequestDTO.getRole());
 
             Users savedUser = userRepo.save(users);

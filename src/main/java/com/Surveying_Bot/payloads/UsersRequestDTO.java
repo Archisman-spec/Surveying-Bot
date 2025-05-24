@@ -9,10 +9,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsersRequestDTO {
+
+    @NotNull(message = "User ID is required")
+    private UUID id;
 
     @NotBlank(message = "Username must not be empty")
     @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters")
