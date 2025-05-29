@@ -36,7 +36,7 @@ public class Users {
     @Column(nullable = false, unique = true, length = 30)
     private String username;
 
-    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
     private Bin bin;
 
 }

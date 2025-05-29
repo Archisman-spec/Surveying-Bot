@@ -1,5 +1,6 @@
 package com.Surveying_Bot.payloads;
 
+import com.Surveying_Bot.models.BinStatus;
 import com.Surveying_Bot.models.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,4 +15,6 @@ public class UsersResponseDTO {
     private String username;
     private Role role;
 
+    private UUID binId;
+    private BinStatus binStatus;
 }

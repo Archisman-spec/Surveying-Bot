@@ -51,7 +51,7 @@ public class UsersController {
     public ResponseEntity<String> deleteUser(@PathVariable("id") UUID id){
         usersService.deleteUser(id);
 
-        return ResponseEntity.ok("Users Deleted Successfully!");
+        return ResponseEntity.ok("User Deleted Successfully!");
     }
     
 }

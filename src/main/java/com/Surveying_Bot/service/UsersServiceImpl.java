@@ -26,7 +26,7 @@ public class UsersServiceImpl implements UsersService {
 
     private final UsersRepo userRepo;
 
- //   private final BinRepo binRepo;
+    private final BinRepo binRepo;
 
     private final ModelMapper modelMapper;
 
@@ -50,10 +50,10 @@ public class UsersServiceImpl implements UsersService {
 
             Users savedUser = userRepo.save(users);
 
-//            Bin bin = new Bin();
-//            bin.setUsers(savedUser);
-//            bin.setBinStatus(BinStatus.PENDING);
-//            binRepo.save(bin);
+            Bin bin = new Bin();
+            bin.setUsers(savedUser);
+            bin.setBinStatus(BinStatus.PENDING);
+            binRepo.save(bin);
 
             return modelMapper.map(savedUser, UsersResponseDTO.class);
 
@@ -104,8 +104,8 @@ public class UsersServiceImpl implements UsersService {
         Users user = userRepo.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("User", "userId", id));
 
-      //  binRepo.findBinByUsersId(user.getId())
-           //     .ifPresent(bin -> binRepo.delete(bin));
+        binRepo.findBinByUsersId(user.getId())
+                .ifPresent(bin -> binRepo.delete(bin));
 
         userRepo.delete(user);
 
@@ -113,5 +113,6 @@ public class UsersServiceImpl implements UsersService {
     }
 
 }
+
 
 
