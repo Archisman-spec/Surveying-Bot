@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -20,8 +21,7 @@ public class BinRequestDTO {
     @Max(value = 100, message = "Bin level must not exceed 100%")
     private Long binLevel;
 
-    @NotBlank(message = "Image URL must not be blank")
-    @Size(max = 2048, message = "Image URL is too long")
-    private String imageUrl;
+    @NotEmpty(message = "Image URLs must not be empty")
+    private List<String> imageUrls;
 
 }

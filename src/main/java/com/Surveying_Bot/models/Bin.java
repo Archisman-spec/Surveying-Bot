@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,26 +18,27 @@ import java.util.UUID;
 public class Bin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
+    @Column(name = "created_at", updatable = false, insertable = false)
     private OffsetDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "bin_status")
     private BinStatus binStatus;
 
-    @NotBlank(message = "Image URL must not be blank")
-    @Size(max = 2048, message = "Image URL is too long")
-    @Column(nullable = false, length = 2048)
-    private String imageUrl;
+    @ElementCollection
+    @CollectionTable(name = "bin_images", joinColumns = @JoinColumn(name = "bin_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls = new ArrayList<>();
 
     @Min(value = 0, message = "Bin level must be at least 0%")
     @Max(value = 100, message = "Bin level must not exceed 100%")
     @Column(nullable = false)
     private Long binLevel;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false, unique = true)
     private Users users;
 
