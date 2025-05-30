@@ -1,5 +1,7 @@
 package com.Surveying_Bot.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 import java.io.Serial;
 
 public class APIException extends RuntimeException {
