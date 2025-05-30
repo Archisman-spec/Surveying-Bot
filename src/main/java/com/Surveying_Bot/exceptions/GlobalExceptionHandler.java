@@ -47,6 +47,7 @@ public class GlobalExceptionHandler {
         APIResponse response = new APIResponse("An unexpected error occurred: " + e.getMessage(), false);
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 }
 
