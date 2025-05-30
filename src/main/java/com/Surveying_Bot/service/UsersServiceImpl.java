@@ -15,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,9 +55,15 @@ public class UsersServiceImpl implements UsersService {
             Bin bin = new Bin();
             bin.setUsers(savedUser);
             bin.setBinStatus(BinStatus.PENDING);
-            binRepo.save(bin);
+            bin.setBinLevel(0L);
+            bin.setImageUrls(new ArrayList<>());
+            Bin savedBin = binRepo.save(bin);
 
-            return modelMapper.map(savedUser, UsersResponseDTO.class);
+            UsersResponseDTO dto = modelMapper.map(savedUser, UsersResponseDTO.class);
+            dto.setBinId(savedBin.getId());
+            dto.setBinStatus(savedBin.getBinStatus());
+
+            return dto;
 
         } catch (DataIntegrityViolationException e){
             throw new APIException("A User with this username already exists.", e);
@@ -67,7 +75,12 @@ public class UsersServiceImpl implements UsersService {
         Users user = userRepo.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("User", "userId", id));
 
-        return modelMapper.map(user, UsersResponseDTO.class);
+        UsersResponseDTO dto = modelMapper.map(user, UsersResponseDTO.class);
+        if(user.getBin() != null ){
+            dto.setBinId(user.getBin().getId());
+            dto.setBinStatus(user.getBin().getBinStatus());
+        }
+        return dto;
     }
 
     @Override
