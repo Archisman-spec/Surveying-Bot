@@ -21,11 +21,12 @@ public class BinController {
 
     private final BinService binService;
 
-    @PostMapping
-    public ResponseEntity<BinResponseDTO> createBin(@Valid @RequestBody BinRequestDTO binRequestDTO){
-        BinResponseDTO createdBin = binService.createBin(binRequestDTO);
+    @PutMapping
+    public ResponseEntity<BinResponseDTO> updateBin(@RequestParam("userId") UUID userId,
+                                                    @Valid @RequestBody BinRequestDTO binRequestDTO){
+        BinResponseDTO updatedBin = binService.updateBin(userId, binRequestDTO);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdBin);
+        return ResponseEntity.ok(updatedBin);
     }
 
     @GetMapping

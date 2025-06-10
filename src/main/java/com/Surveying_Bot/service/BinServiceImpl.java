@@ -27,27 +27,24 @@ public class BinServiceImpl implements BinService{
 
     private final BinRepo binRepo;
 
-    private final UsersRepo userRepo;
-
     private final ModelMapper modelMapper;
 
     @Override
-    public BinResponseDTO createBin(BinRequestDTO binRequestDTO) {
-        Users user = userRepo.findById(binRequestDTO.getUserId())
-                .orElseThrow(()-> new ResourceNotFoundException("User", "userId", binRequestDTO.getUserId()));
+    public BinResponseDTO updateBin(UUID userId, BinRequestDTO binRequestDTO) {
+        Bin existingBin = binRepo.findBinByUsersId(userId)
+                .orElseThrow(()-> new ResourceNotFoundException("Bin", "userId", userId));
 
-        if (binRepo.findBinByUsersId(user.getId()).isPresent()) {
-            throw new APIException("User already has a bin associated!");
+        if (binRequestDTO.getBinLevel() != null) {
+            existingBin.setBinLevel(binRequestDTO.getBinLevel());
         }
 
-        Bin bin = new Bin();
-        bin.setUsers(user);
-        bin.setBinLevel(binRequestDTO.getBinLevel());
-        bin.setBinStatus(BinStatus.PENDING);
-        bin.setImageUrls(new ArrayList<>(binRequestDTO.getImageUrls()));
+        if (binRequestDTO.getImageUrls() != null){
+            existingBin.setImageUrls(new ArrayList<>(binRequestDTO.getImageUrls()));
+        }
 
-        Bin savedBin = binRepo.save(bin);
-        return mapToBinResponseDTO(savedBin);
+        Bin updatedBin = binRepo.save(existingBin);
+
+        return mapToBinResponseDTO(updatedBin);
     }
 
     @Override

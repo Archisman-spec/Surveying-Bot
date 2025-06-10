@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface BinService {
 
-    BinResponseDTO createBin(BinRequestDTO binRequestDTO);
+    BinResponseDTO updateBin(UUID userId,BinRequestDTO binRequestDTO);
 
     BinResponseDTO getUserBin(UUID userId);
 
