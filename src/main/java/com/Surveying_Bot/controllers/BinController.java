@@ -21,8 +21,8 @@ public class BinController {
 
     private final BinService binService;
 
-    @PutMapping
-    public ResponseEntity<BinResponseDTO> updateBin(@RequestParam("userId") UUID userId,
+    @PutMapping("/{userId}")
+    public ResponseEntity<BinResponseDTO> updateBin(@PathVariable("userId") UUID userId,
                                                     @Valid @RequestBody BinRequestDTO binRequestDTO){
         BinResponseDTO updatedBin = binService.updateBin(userId, binRequestDTO);
 
